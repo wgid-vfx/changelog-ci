@@ -59,9 +59,10 @@ class ChangelogCI:
         """Gets pull request title from ``GITHUB_EVENT_PATH``"""
         with open(event_path, 'r') as json_file:
             # This is just a webhook payload available to the Action
-            data = json.load(json_file)
-            title = data["pull_request"]['title']
-            number = data['number']
+            data = json.load(json_file) or {}
+
+        title = data.get("pull_request", {}).get('title', "Testing")
+        number = data.get('number', 00)
 
         return title, number
 
